@@ -1,9 +1,15 @@
 import {configureStore} from '@reduxjs/toolkit';
 
-interface ReduxStore {}
+import {Status, statusReducer} from './status/statusSlice';
+
+export interface ReduxStore {
+  status: Status;
+}
 
 const reduxStore = configureStore<ReduxStore>({
-  reducer: () => {},
+  reducer: {
+    status: statusReducer,
+  },
 });
 
 export default reduxStore;

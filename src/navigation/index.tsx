@@ -1,13 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import HomeScreen from '../screens/HomeScreen';
+import SearchScreen from '../screens/SearchScreen';
 import SplashScreen from '../screens/SplashScreen';
 import ArticleScreen from '../screens/ArticleScreen';
-import SearchScreen from '../screens/SearchScreen';
 import BookmarkScreen from '../screens/BookmarkScreen';
 
+import {ReduxStore} from '../redux/store';
 import {RootStackParamList} from './types';
+import {setShowSplashScreen} from '../redux/status/statusSlice';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,11 +23,25 @@ export const ScreenName: Record<keyof RootStackParamList, string> = {
 };
 
 const AppNavigation = () => {
+  const showSplashScreen = useSelector<ReduxStore, boolean>(
+    state => state.status.showSplashScreen,
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const id = setTimeout(() => dispatch(setShowSplashScreen(false)), 3000);
+
+    return () => clearTimeout(id);
+  }, [dispatch]);
+
   return (
     <Stack.Navigator
       initialRouteName={ScreenName.Splash}
       screenOptions={{headerShown: false}}>
-      <Stack.Screen name={ScreenName.Splash} component={SplashScreen} />
+      {showSplashScreen && (
+        <Stack.Screen name={ScreenName.Splash} component={SplashScreen} />
+      )}
       <Stack.Screen name={ScreenName.Home} component={HomeScreen} />
       <Stack.Screen name={ScreenName.Article} component={ArticleScreen} />
       <Stack.Screen name={ScreenName.Search} component={SearchScreen} />
