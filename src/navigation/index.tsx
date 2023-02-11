@@ -12,15 +12,15 @@ import {ReduxStore} from '../redux/store';
 import {RootStackParamList} from './types';
 import {setShowSplashScreen} from '../redux/status/statusSlice';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export const ScreenName: Record<keyof RootStackParamList, string> = {
-  Home: 'Home',
-  Article: 'Article',
-  Search: 'Search',
-  Bookmark: 'Bookmark',
-  Splash: 'Splash',
-};
+export enum ScreenName {
+  Home = 'Home',
+  Article = 'Article',
+  Search = 'Search',
+  Bookmark = 'Bookmark',
+  Splash = 'Splash',
+}
 
 const AppNavigation = () => {
   const showSplashScreen = useSelector<ReduxStore, boolean>(

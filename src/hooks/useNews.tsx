@@ -1,66 +1,84 @@
 import {useDispatch} from 'react-redux';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 
 import {Category, Country} from '../api/news';
 import {loadArticles} from '../redux/news/newsSlice';
-import {getNews} from '../api/news/getNews';
+import {getNews, GetNewsOptions} from '../api/news/getNews';
+import {uniqueIDGenerator} from '../utils/numberUtils';
 
-export const useNewsByCategory = () => {
+const useNews = () => {
   const [articleUrls, setArticleUrls] = useState<string[]>([]);
-  const [category, setCategory] = useState<Category>(Category.GENERAL);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
-  const fetchNews = useCallback(async () => {
-    setLoading(true);
+  const lastRequest = useRef<number | null>(null);
+  const getUniqueID = useRef(uniqueIDGenerator()).current;
 
-    const articles = await getNews({
+  const fetchNews = useCallback(
+    async (options: GetNewsOptions) => {
+      setLoading(true);
+
+      const id = getUniqueID();
+
+      lastRequest.current = id;
+
+      const articles = await getNews(options);
+
+      if (id === lastRequest.current) {
+        dispatch(loadArticles(articles));
+        setArticleUrls(articles.map(article => article.url));
+
+        setLoading(false);
+      }
+    },
+    [dispatch, getUniqueID],
+  );
+
+  return {loading, articleUrls, fetchNews, setArticleUrls};
+};
+
+export const useNewsByCategory = () => {
+  const [category, setCategory] = useState<Category>(Category.GENERAL);
+  const {articleUrls, loading, fetchNews} = useNews();
+
+  const refresh = useCallback(() => {
+    fetchNews({
       category: category,
       country: Country.INDIA,
     });
-
-    dispatch(loadArticles(articles));
-    setArticleUrls(articles.map(article => article.url));
-
-    setLoading(false);
-  }, [dispatch, category]);
+  }, [fetchNews, category]);
 
   useEffect(() => {
-    fetchNews();
-  }, [fetchNews, category]);
+    refresh();
+  }, [refresh, category]);
 
   return {
     category,
     articleUrls,
     setCategory,
     loading,
-    refresh: fetchNews,
+    refresh,
   };
 };
 
 export const useNewsByQuery = () => {
-  const [articleUrls, setArticleUrls] = useState<string[]>([]);
   const [query, setQuery] = useState('');
-  const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
+  const {loading, setArticleUrls, articleUrls, fetchNews} = useNews();
 
-  const fetchNews = useCallback(async () => {
-    setLoading(true);
-
-    const articles = await getNews({
-      q: query,
-      country: Country.INDIA,
-    });
-
-    dispatch(loadArticles(articles));
-    setArticleUrls(articles.map(article => article.url));
-
-    setLoading(false);
-  }, [dispatch, query]);
+  const refresh = useCallback(() => {
+    if (query === '') {
+      setArticleUrls([]);
+    } else {
+      fetchNews({
+        q: query,
+        country: Country.INDIA,
+      });
+    }
+  }, [fetchNews, query, setArticleUrls]);
 
   useEffect(() => {
-    fetchNews();
-  }, [fetchNews, query]);
+    refresh();
+  }, [refresh, query]);
 
   return {
     query,

@@ -7,15 +7,13 @@ import {firstLetterUpper} from '../utils/stringUtils';
 interface Props {
   category: Category;
   setCategory: (category: Category) => any;
-  disableChange: boolean;
 }
 
 const NewsCategory = (props: Props) => {
   const categories = Object.values(Category).map(categoryName => (
     <TouchableWithoutFeedback
       key={categoryName}
-      onPress={() => props.setCategory(categoryName)}
-      disabled={props.disableChange}>
+      onPress={() => props.setCategory(categoryName)}>
       <Text
         className={`p-1 p-3 px-5 bg-neutral-800 ${
           props.category === categoryName ? 'border-b-2 border-blue-500' : ''
