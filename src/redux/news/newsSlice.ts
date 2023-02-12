@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {Category} from '../../api/news';
 
 export interface NewsArticle {
   source: {id: string; name: string};
@@ -12,12 +13,20 @@ export interface NewsArticle {
 }
 
 export interface News {
-  articles: {[id: string]: NewsArticle};
+  articles: Record<Category, Record<string, NewsArticle>>;
   bookmarks: {[id: string]: NewsArticle};
 }
 
 const initialState: News = {
-  articles: {},
+  articles: {
+    general: {},
+    science: {},
+    sports: {},
+    entertainment: {},
+    technology: {},
+    health: {},
+    business: {},
+  },
   bookmarks: {},
 };
 
@@ -25,11 +34,11 @@ const newsSlice = createSlice({
   name: 'news',
   initialState,
   reducers: {
-    loadArticles: (state, action: PayloadAction<NewsArticle[]>) => {
-      const articles = action.payload;
+    loadArticles: (state, action: PayloadAction<[Category, NewsArticle[]]>) => {
+      const [category, articles] = action.payload;
 
       for (let article of articles) {
-        state.articles[article.url] = article;
+        state.articles[category][article.url] = article;
       }
     },
     setBookmark: (state, action: PayloadAction<NewsArticle>) => {
@@ -46,4 +55,4 @@ const newsSlice = createSlice({
 
 export const newsReducer = newsSlice.reducer;
 
-export const {loadArticles} = newsSlice.actions;
+export const {loadArticles, setBookmark, unsetBookmark} = newsSlice.actions;

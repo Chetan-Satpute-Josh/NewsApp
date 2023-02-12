@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {SafeAreaView, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -7,9 +7,16 @@ import NewsList from '../components/NewsList';
 import NewsCategory from '../components/NewsCategory';
 import {ScreenName} from '../navigation';
 import {HomeScreenProps} from '../navigation/types';
+import {useDispatch} from 'react-redux';
+import {loadArticles} from '../redux/news/newsSlice';
 
 const HomeScreen = (props: HomeScreenProps) => {
-  const news = useNewsByCategory();
+  const {articles, category, setCategory, loading} = useNewsByCategory();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadArticles([category, articles]));
+  }, [category, articles, dispatch]);
 
   return (
     <SafeAreaView className="flex-1 bg-neutral-900">
@@ -26,13 +33,14 @@ const HomeScreen = (props: HomeScreenProps) => {
             name="bookmarks"
             backgroundColor="transparent"
             size={20}
+            onPress={() => props.navigation.navigate(ScreenName.Bookmark)}
           />
         </View>
       </View>
 
-      <NewsCategory category={news.category} setCategory={news.setCategory} />
+      <NewsCategory category={category} setCategory={setCategory} />
 
-      <NewsList urls={news.articleUrls} loading={news.loading} />
+      <NewsList articles={articles} loading={loading} />
     </SafeAreaView>
   );
 };

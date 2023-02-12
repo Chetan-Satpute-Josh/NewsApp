@@ -1,15 +1,13 @@
-import {useDispatch} from 'react-redux';
 import {useCallback, useEffect, useRef, useState} from 'react';
 
 import {Category, Country} from '../api/news';
-import {loadArticles} from '../redux/news/newsSlice';
+import {NewsArticle} from '../redux/news/newsSlice';
 import {getNews, GetNewsOptions} from '../api/news/getNews';
 import {uniqueIDGenerator} from '../utils/numberUtils';
 
 const useNews = () => {
-  const [articleUrls, setArticleUrls] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
+  const [articles, setArticles] = useState<NewsArticle[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const lastRequest = useRef<number | null>(null);
   const getUniqueID = useRef(uniqueIDGenerator()).current;
@@ -22,24 +20,23 @@ const useNews = () => {
 
       lastRequest.current = id;
 
-      const articles = await getNews(options);
+      const newArticles = await getNews(options);
 
       if (id === lastRequest.current) {
-        dispatch(loadArticles(articles));
-        setArticleUrls(articles.map(article => article.url));
+        setArticles(newArticles);
 
         setLoading(false);
       }
     },
-    [dispatch, getUniqueID],
+    [getUniqueID],
   );
 
-  return {loading, articleUrls, fetchNews, setArticleUrls};
+  return {loading, articles, fetchNews, setArticles};
 };
 
 export const useNewsByCategory = () => {
   const [category, setCategory] = useState<Category>(Category.GENERAL);
-  const {articleUrls, loading, fetchNews} = useNews();
+  const {articles, loading, fetchNews} = useNews();
 
   const refresh = useCallback(() => {
     fetchNews({
@@ -54,7 +51,7 @@ export const useNewsByCategory = () => {
 
   return {
     category,
-    articleUrls,
+    articles,
     setCategory,
     loading,
     refresh,
@@ -63,18 +60,18 @@ export const useNewsByCategory = () => {
 
 export const useNewsByQuery = () => {
   const [query, setQuery] = useState('');
-  const {loading, setArticleUrls, articleUrls, fetchNews} = useNews();
+  const {loading, setArticles, articles, fetchNews} = useNews();
 
   const refresh = useCallback(() => {
     if (query === '') {
-      setArticleUrls([]);
+      setArticles([]);
     } else {
       fetchNews({
         q: query,
         country: Country.INDIA,
       });
     }
-  }, [fetchNews, query, setArticleUrls]);
+  }, [fetchNews, query, setArticles]);
 
   useEffect(() => {
     refresh();
@@ -82,9 +79,9 @@ export const useNewsByQuery = () => {
 
   return {
     query,
-    articleUrls,
+    articles,
     searchByQuery: setQuery,
     loading,
-    refresh: fetchNews,
+    refresh,
   };
 };
