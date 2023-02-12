@@ -1,5 +1,4 @@
 import React from 'react';
-import {Button} from 'react-native';
 import {
   Image,
   SafeAreaView,
@@ -9,8 +8,9 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import OpenURLButton from '../components/OpenURLButton';
+
 import useBookmark from '../hooks/useBookmark';
+import OpenURLButton from '../components/OpenURLButton';
 import {ArticleScreenProps} from '../navigation/types';
 
 const ArticleScreen = (props: ArticleScreenProps) => {
@@ -29,11 +29,15 @@ const ArticleScreen = (props: ArticleScreenProps) => {
         {BookmarkButton}
       </View>
       <ScrollView className="flex-1 space-y-5">
-        <View className="h-60">
-          <Image source={{uri: article.urlToImage}} style={styles.image} />
-        </View>
+        <Text className="text-neutral-200 text-lg p-2">{article.title}</Text>
 
-        <Text className="text-neutral-400 font-sm text-center px-2">
+        {article.urlToImage && (
+          <View className="h-60">
+            <Image source={{uri: article.urlToImage}} style={styles.image} />
+          </View>
+        )}
+
+        <Text className="text-neutral-400 font-sm text-center px-2 italic">
           {article.description}
         </Text>
 

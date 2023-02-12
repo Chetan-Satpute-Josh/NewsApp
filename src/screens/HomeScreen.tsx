@@ -1,17 +1,18 @@
 import React, {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
 import {SafeAreaView, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {useNewsByCategory} from '../hooks/useNews';
-import NewsList from '../components/NewsList';
-import NewsCategory from '../components/NewsCategory';
 import {ScreenName} from '../navigation';
+import NewsList from '../components/NewsList';
+import {useNewsByCategory} from '../hooks/useNews';
 import {HomeScreenProps} from '../navigation/types';
-import {useDispatch} from 'react-redux';
 import {loadArticles} from '../redux/news/newsSlice';
+import NewsCategory from '../components/NewsCategory';
 
 const HomeScreen = (props: HomeScreenProps) => {
-  const {articles, category, setCategory, loading} = useNewsByCategory();
+  const {articles, category, setCategory, loading, refresh} =
+    useNewsByCategory();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const HomeScreen = (props: HomeScreenProps) => {
 
       <NewsCategory category={category} setCategory={setCategory} />
 
-      <NewsList articles={articles} loading={loading} />
+      <NewsList articles={articles} loading={loading} onRefresh={refresh} />
     </SafeAreaView>
   );
 };

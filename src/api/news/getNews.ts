@@ -30,7 +30,7 @@ export const getNews = async (options: GetNewsOptions) => {
     articles: NewsArticle[];
   };
 
-  await new Promise(resolve => setTimeout(() => resolve(undefined), 2000));
+  // await new Promise(resolve => setTimeout(() => resolve(undefined), 2000));
 
   return data.articles;
 };

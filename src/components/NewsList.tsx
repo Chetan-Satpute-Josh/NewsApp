@@ -1,28 +1,30 @@
 import React from 'react';
-import {ActivityIndicator, FlatList, View} from 'react-native';
+import {FlatList, View} from 'react-native';
 
 import NewsCard from './NewsCard';
 import {NewsArticle} from '../redux/news/newsSlice';
+import {RefreshControl} from 'react-native';
 
 interface Props {
   articles: NewsArticle[];
   loading: boolean;
+  onRefresh: () => any;
 }
 
 const NewsList = (props: Props) => {
-  if (props.loading) {
-    return (
-      <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" color="#3b82f6" />
-      </View>
-    );
-  }
-
   return (
     <View className="flex-1">
       <FlatList
-        data={props.articles}
+        data={props.loading ? [] : props.articles}
         renderItem={({item}) => <NewsCard article={item} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={props.loading}
+            onRefresh={props.onRefresh}
+            colors={['#e5e5e5']}
+            progressBackgroundColor="#525252"
+          />
+        }
       />
     </View>
   );
