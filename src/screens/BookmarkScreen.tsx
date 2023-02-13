@@ -29,7 +29,7 @@ const BookmarkScreen = (props: BookmarkScreenProps) => {
         <Text className="font-bold text-lg text-neutral-200">Bookmarks</Text>
       </View>
 
-      <NewsList articles={articles} loading={false} />
+      <NewsList articles={articles} loading={false} onRefresh={() => {}} />
     </SafeAreaView>
   );
 };

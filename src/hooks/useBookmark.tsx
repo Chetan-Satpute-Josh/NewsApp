@@ -1,8 +1,9 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {NewsArticle, setBookmark, unsetBookmark} from '../redux/news/newsSlice';
-import {ReduxStore} from '../redux/store';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+import {ReduxStore} from '../redux/store';
+import {NewsArticle, setBookmark, unsetBookmark} from '../redux/news/newsSlice';
 
 const useBookmark = (article: NewsArticle) => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const useBookmark = (article: NewsArticle) => {
     }
   };
 
-  const bookmarkButton = (
+  return (
     <Icon.Button
       name={isBookmarked ? 'bookmark' : 'bookmark-outline'}
       color="#e5e5e5e5"
@@ -27,8 +28,6 @@ const useBookmark = (article: NewsArticle) => {
       onPress={toggle}
     />
   );
-
-  return bookmarkButton;
 };
 
 export default useBookmark;

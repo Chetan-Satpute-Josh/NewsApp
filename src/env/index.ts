@@ -6,6 +6,6 @@ export interface Env {
   API_KEY: string;
 }
 
-const env = !__DEV__ ? envDevelopment : envProduction;
+const env = __DEV__ ? envDevelopment : envProduction;
 
 export default env;

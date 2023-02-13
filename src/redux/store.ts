@@ -1,6 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {News, newsReducer} from './news/newsSlice';
 
+import {News, newsReducer} from './news/newsSlice';
 import {Status, statusReducer} from './status/statusSlice';
 
 export interface ReduxStore {

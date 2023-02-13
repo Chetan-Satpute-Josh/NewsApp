@@ -8,7 +8,7 @@ import {SearchScreenProps} from '../navigation/types';
 
 const SearchScreen = (props: SearchScreenProps) => {
   const [inputValue, setInputValue] = useState('');
-  const {searchByQuery, articles, loading} = useNewsByQuery();
+  const {searchByQuery, articles, loading, refresh} = useNewsByQuery();
 
   const timeoutID = useRef<number | null>(null);
 
@@ -46,7 +46,7 @@ const SearchScreen = (props: SearchScreenProps) => {
         />
       </View>
 
-      <NewsList articles={articles} loading={loading} />
+      <NewsList articles={articles} loading={loading} onRefresh={refresh} />
     </SafeAreaView>
   );
 };

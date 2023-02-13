@@ -10,11 +10,12 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import useBookmark from '../hooks/useBookmark';
-import OpenURLButton from '../components/OpenURLButton';
 import {ArticleScreenProps} from '../navigation/types';
+import OpenURLButton from '../components/OpenURLButton';
 
 const ArticleScreen = (props: ArticleScreenProps) => {
   const {article} = props.route.params;
+
   const BookmarkButton = useBookmark(article);
 
   return (

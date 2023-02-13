@@ -1,5 +1,5 @@
-import {Category, Country} from '.';
 import env from '../../env';
+import {Category, Country} from '.';
 import {NewsArticle} from '../../redux/news/newsSlice';
 
 export type GetNewsOptions =
@@ -29,8 +29,6 @@ export const getNews = async (options: GetNewsOptions) => {
   const data = (await response.json()) as {
     articles: NewsArticle[];
   };
-
-  // await new Promise(resolve => setTimeout(() => resolve(undefined), 2000));
 
   return data.articles;
 };

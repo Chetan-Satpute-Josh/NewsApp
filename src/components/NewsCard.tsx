@@ -1,5 +1,4 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {
   View,
   Text,
@@ -7,14 +6,13 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {formatDate} from '../utils/dateUtils';
-import {useDispatch, useSelector} from 'react-redux';
-import {ReduxStore} from '../redux/store';
-import {NewsArticle, setBookmark, unsetBookmark} from '../redux/news/newsSlice';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
+
 import {ScreenName} from '../navigation';
-import {RootStackParamList} from '../navigation/types';
+import {formatDate} from '../utils/dateUtils';
 import useBookmark from '../hooks/useBookmark';
+import {NewsArticle} from '../redux/news/newsSlice';
+import {RootStackParamList} from '../navigation/types';
 
 interface Props {
   article: NewsArticle;
@@ -23,8 +21,8 @@ interface Props {
 const NewsCard = (props: Props) => {
   const article = props.article;
 
+  const BookmarkButton = useBookmark(article);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const BookmarkButton = useBookmark(props.article);
 
   const publshingDate = new Date(article.publishedAt);
 

@@ -1,9 +1,8 @@
 import React from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, View, RefreshControl} from 'react-native';
 
 import NewsCard from './NewsCard';
 import {NewsArticle} from '../redux/news/newsSlice';
-import {RefreshControl} from 'react-native';
 
 interface Props {
   articles: NewsArticle[];
