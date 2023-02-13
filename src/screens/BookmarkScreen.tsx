@@ -5,8 +5,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import {ReduxStore} from '../redux/store';
 import NewsList from '../components/NewsList';
-import {NewsArticle} from '../redux/news/newsSlice';
 import {BookmarkScreenProps} from '../navigation/types';
+import {NewsArticle} from '../api/news/types';
 
 const BookmarkScreen = (props: BookmarkScreenProps) => {
   const [articles, setArticles] = useState<NewsArticle[]>([]);

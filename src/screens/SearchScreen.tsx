@@ -1,32 +1,41 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {SafeAreaView, TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {Country, NewsArticle} from '../api/news/types';
 
 import NewsList from '../components/NewsList';
-import {useNewsByQuery} from '../hooks/useNews';
+import useNews from '../api/news/hooks/useNews';
 import {SearchScreenProps} from '../navigation/types';
-
 const SearchScreen = (props: SearchScreenProps) => {
   const [inputValue, setInputValue] = useState('');
-  const {searchByQuery, articles, loading, refresh} = useNewsByQuery();
+  const [articles, setArticles] = useState<NewsArticle[]>([]);
+
+  const {loading, fetchNews} = useNews();
 
   const timeoutID = useRef<number | null>(null);
+
+  const resetArticles = useCallback(async () => {
+    const _articles = await fetchNews({q: inputValue, country: Country.INDIA});
+    setArticles(_articles);
+  }, [inputValue, fetchNews]);
 
   useEffect(() => {
     if (timeoutID.current) {
       clearTimeout(timeoutID.current);
     }
 
-    timeoutID.current = setTimeout(() => {
-      searchByQuery(inputValue);
-    }, 500);
+    if (inputValue === '') {
+      setArticles([]);
+    } else {
+      timeoutID.current = setTimeout(resetArticles, 500);
+    }
 
     return () => {
       if (timeoutID.current) {
         clearTimeout(timeoutID.current);
       }
     };
-  }, [timeoutID, searchByQuery, inputValue]);
+  }, [timeoutID, resetArticles, setArticles, inputValue]);
 
   return (
     <SafeAreaView className="flex-1 bg-neutral-900">
@@ -46,7 +55,11 @@ const SearchScreen = (props: SearchScreenProps) => {
         />
       </View>
 
-      <NewsList articles={articles} loading={loading} onRefresh={refresh} />
+      <NewsList
+        articles={articles}
+        loading={loading}
+        onRefresh={resetArticles}
+      />
     </SafeAreaView>
   );
 };

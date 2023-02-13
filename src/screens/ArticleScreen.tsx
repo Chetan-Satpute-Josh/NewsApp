@@ -30,7 +30,9 @@ const ArticleScreen = (props: ArticleScreenProps) => {
         {BookmarkButton}
       </View>
       <ScrollView className="flex-1 space-y-5">
-        <Text className="text-neutral-200 text-lg p-2">{article.title}</Text>
+        <Text className="text-neutral-200 text-lg px-2 font-semibold">
+          {article.title}
+        </Text>
 
         {article.urlToImage && (
           <View className="h-60">

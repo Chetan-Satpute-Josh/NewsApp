@@ -1,7 +1,7 @@
 import React from 'react';
 import {ScrollView, Text, TouchableWithoutFeedback} from 'react-native';
 
-import {Category} from '../api/news';
+import {Category} from '../api/news/types';
 import {firstLetterUpper} from '../utils/stringUtils';
 
 interface Props {
@@ -15,7 +15,7 @@ const NewsCategory = (props: Props) => {
       key={categoryName}
       onPress={() => props.setCategory(categoryName)}>
       <Text
-        className={`p-1 p-3 px-5 bg-neutral-800 ${
+        className={`p-1 p-3 px-5 ${
           props.category === categoryName ? 'border-b-2 border-blue-500' : ''
         }`}>
         {firstLetterUpper(categoryName)}
@@ -25,7 +25,7 @@ const NewsCategory = (props: Props) => {
 
   return (
     <ScrollView
-      className="grow-0"
+      className="grow-0 bg-neutral-800 "
       horizontal={true}
       showsHorizontalScrollIndicator={false}>
       {categories}

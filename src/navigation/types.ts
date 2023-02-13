@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ScreenName} from '.';
-import {NewsArticle} from '../redux/news/newsSlice';
+import {NewsArticle} from '../api/news/types';
 
 export type RootStackParamList = {
   Home: undefined;

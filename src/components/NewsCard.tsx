@@ -11,8 +11,11 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ScreenName} from '../navigation';
 import {formatDate} from '../utils/dateUtils';
 import useBookmark from '../hooks/useBookmark';
-import {NewsArticle} from '../redux/news/newsSlice';
 import {RootStackParamList} from '../navigation/types';
+import {NewsArticle} from '../api/news/types';
+import {useDispatch, useSelector} from 'react-redux';
+import {ReduxStore} from '../redux/store';
+import {setViewed} from '../redux/news/newsSlice';
 
 interface Props {
   article: NewsArticle;
@@ -24,14 +27,23 @@ const NewsCard = (props: Props) => {
   const BookmarkButton = useBookmark(article);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
+  const dispatch = useDispatch();
+  const isViewed = useSelector<ReduxStore, boolean>(
+    state => state.news.viewed[props.article.url],
+  );
+
   const publshingDate = new Date(article.publishedAt);
 
   return (
     <TouchableWithoutFeedback
-      onPress={() =>
-        navigation.navigate(ScreenName.Article, {article: article})
-      }>
-      <View className="flex-row py-2 px-1 border-b border-b-neutral-600">
+      onPress={() => {
+        dispatch(setViewed(props.article.url));
+        navigation.navigate(ScreenName.Article, {article: article});
+      }}>
+      <View
+        className={`flex-row py-2 px-1 border-b border-b-neutral-600 ${
+          isViewed ? 'opacity-70' : 'opacity-100'
+        }`}>
         {article.urlToImage && (
           <View className="basis-1/4">
             <Image source={{uri: article.urlToImage}} style={styles.image} />

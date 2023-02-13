@@ -3,7 +3,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {ReduxStore} from '../redux/store';
-import {NewsArticle, setBookmark, unsetBookmark} from '../redux/news/newsSlice';
+import {setBookmark, unsetBookmark} from '../redux/news/newsSlice';
+import {NewsArticle} from '../api/news/types';
 
 const useBookmark = (article: NewsArticle) => {
   const dispatch = useDispatch();
