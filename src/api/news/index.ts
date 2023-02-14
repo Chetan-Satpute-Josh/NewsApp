@@ -1,3 +1,4 @@
+import {ToastAndroid} from 'react-native';
 import env from '../../env';
 import {Category, Country, NewsArticle} from './types';
 
@@ -18,18 +19,24 @@ export const getNews = async (options: GetNewsOptions) => {
 
   const url = `${env.API_URL}/v2/top-headlines?${paramString}`;
 
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      Authorization: env.API_KEY,
-    },
-  });
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: env.API_KEY,
+      },
+    });
 
-  const data = (await response.json()) as {
-    articles: NewsArticle[];
-  };
+    const data = (await response.json()) as {
+      articles: NewsArticle[];
+    };
+
+    return data.articles;
+  } catch (err) {
+    ToastAndroid.show('Failed to get news !', ToastAndroid.LONG);
+  }
 
   // await new Promise<void>(resolve => setTimeout(() => resolve(), 2000));
 
-  return data.articles;
+  return [];
 };
