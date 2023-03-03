@@ -3,14 +3,15 @@ import {useDispatch, useSelector} from 'react-redux';
 import {SafeAreaView, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {ScreenName} from '../navigation';
 import NewsList from '../components/NewsList';
+import NewsCategory from '../components/NewsCategory';
+
+import {ScreenName} from '../navigation';
+import {ReduxStore} from '../redux/store';
 import useNews from '../api/news/hooks/useNews';
 import {HomeScreenProps} from '../navigation/types';
 import {loadArticles} from '../redux/news/newsSlice';
-import NewsCategory from '../components/NewsCategory';
 import {Category, Country, NewsArticle} from '../api/news/types';
-import {ReduxStore} from '../redux/store';
 
 const HomeScreen = (props: HomeScreenProps) => {
   const [category, setCategory] = useState<Category>(Category.GENERAL);

@@ -9,9 +9,10 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import OpenURLButton from '../components/OpenURLButton';
+
 import useBookmark from '../hooks/useBookmark';
 import {ArticleScreenProps} from '../navigation/types';
-import OpenURLButton from '../components/OpenURLButton';
 
 const ArticleScreen = (props: ArticleScreenProps) => {
   const {article} = props.route.params;

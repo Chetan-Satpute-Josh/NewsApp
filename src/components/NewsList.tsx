@@ -1,8 +1,8 @@
 import React from 'react';
 import {FlatList, View, RefreshControl} from 'react-native';
-import {NewsArticle} from '../api/news/types';
 
 import NewsCard from './NewsCard';
+import {NewsArticle} from '../api/news/types';
 
 interface Props {
   articles: NewsArticle[];

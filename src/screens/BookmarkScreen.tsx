@@ -3,10 +3,11 @@ import React, {useEffect, useState} from 'react';
 import {SafeAreaView, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {ReduxStore} from '../redux/store';
 import NewsList from '../components/NewsList';
-import {BookmarkScreenProps} from '../navigation/types';
+
+import {ReduxStore} from '../redux/store';
 import {NewsArticle} from '../api/news/types';
+import {BookmarkScreenProps} from '../navigation/types';
 
 const BookmarkScreen = (props: BookmarkScreenProps) => {
   const [articles, setArticles] = useState<NewsArticle[]>([]);

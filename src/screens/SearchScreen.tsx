@@ -1,11 +1,13 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {SafeAreaView, TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Country, NewsArticle} from '../api/news/types';
 
 import NewsList from '../components/NewsList';
+
 import useNews from '../api/news/hooks/useNews';
 import {SearchScreenProps} from '../navigation/types';
+import {Country, NewsArticle} from '../api/news/types';
+
 const SearchScreen = (props: SearchScreenProps) => {
   const [inputValue, setInputValue] = useState('');
   const [articles, setArticles] = useState<NewsArticle[]>([]);

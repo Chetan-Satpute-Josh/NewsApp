@@ -1,4 +1,5 @@
 import {ToastAndroid} from 'react-native';
+
 import env from '../../env';
 import {Category, Country, NewsArticle} from './types';
 

@@ -6,16 +6,16 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 import {ScreenName} from '../navigation';
+import {ReduxStore} from '../redux/store';
+import {NewsArticle} from '../api/news/types';
 import {formatDate} from '../utils/dateUtils';
 import useBookmark from '../hooks/useBookmark';
-import {RootStackParamList} from '../navigation/types';
-import {NewsArticle} from '../api/news/types';
-import {useDispatch, useSelector} from 'react-redux';
-import {ReduxStore} from '../redux/store';
 import {setViewed} from '../redux/news/newsSlice';
+import {RootStackParamList} from '../navigation/types';
 
 interface Props {
   article: NewsArticle;
